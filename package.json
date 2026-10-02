@@ -1,0 +1,14 @@
+{
+  "name": "starlight-homehealth",
+  "private": true,
+  "description": "Website for Starlight Home Health Services",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/a11y.mjs",
+    "serve": "python3 -m http.server 8080"
+  },
+  "devDependencies": {
+    "axe-core": "^4.10.0",
+    "playwright": "^1.56.0"
+  }
+}
