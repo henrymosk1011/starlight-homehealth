@@ -17,6 +17,7 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
   - Animated stat counters are `aria-hidden` with a `.sr-only` final value next to them.
   - Forms: every field has a visible label, "(required)" or "(optional)" text, and hints tied with `aria-describedby`. Validation is in `main.js` (`data-validate`, `data-label`, `data-error`), with an error summary that takes focus and inline errors tied to each field.
   - Touch targets are at least 24 by 24 px. Most controls are 44 px or more.
+  - The contact page map (`map.js`, Leaflet in `assets/leaflet`) is extra: the address and counties are also in the page text. Dragging has button alternatives (zoom and move), scroll wheel zoom is off, and the motion switch covers its pans and zooms.
 - Colors come from the tokens at the top of `styles.css`. Body text must stay at 4.5:1 contrast or higher. `--gold` is never used for text on white; it fails contrast there.
 
 ## Writing rules
@@ -45,6 +46,7 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
 - `noindex, nofollow` meta tag is on every page while this is a staging copy. Remove it at launch.
 - Forms do not send anything yet. Connect a HIPAA appropriate form service. The forms ask visitors not to send health information; keep that.
 - Client to confirm: office hours (their old contact page says 5:30 pm), Careers page copy and role list.
+- Confirm the office pin on the contact map. `OFFICE` in `map.js` is estimated from nearby addresses.
 - Client site has 3 testimonials not yet used. Adding them needs a new section.
 - Real screen reader pass (VoiceOver, NVDA) still to do.
 

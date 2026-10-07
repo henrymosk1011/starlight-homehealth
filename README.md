@@ -19,6 +19,8 @@ Multi page website for Starlight Home Health Services, a home health agency in B
 
 Shared files: `styles.css`, `main.js`, and `assets/` for the logos and icons.
 
+The contact page also loads `map.js`, Leaflet (`assets/leaflet/`) and the county outlines (`assets/service-area.js`) for its office and service area map. Map tiles come from OpenStreetMap.
+
 ## Preview locally
 
 Open `index.html` in a browser, or run a local server:
