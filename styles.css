@@ -1920,6 +1920,27 @@ html.motion-on .statement.is-scrub .sw.on {
   font-size: var(--step--1);
   color: var(--slate);
 }
+.map-compare {
+  margin-top: 3rem;
+}
+.map-compare-label {
+  margin-bottom: 0.85rem;
+  font-weight: 650;
+}
+.map-embed {
+  display: block;
+  width: 100%;
+  height: clamp(320px, 62vh, 560px);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--mist);
+  box-shadow: var(--shadow);
+}
+@media (max-width: 640px) {
+  .map-embed {
+    height: clamp(320px, 50vh, 440px);
+  }
+}
 
 /* Forms */
 .form-card {

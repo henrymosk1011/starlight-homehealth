@@ -47,6 +47,7 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
 - Forms do not send anything yet. Connect a HIPAA appropriate form service. The forms ask visitors not to send health information; keep that.
 - Client to confirm: office hours (their old contact page says 5:30 pm), Careers page copy and role list.
 - Confirm the office pin on the contact map. `OFFICE` in `map.js` is estimated from nearby addresses.
+- The contact page shows two maps for comparison: the Leaflet map and a Google Maps embed (`.map-compare`) below it. Keep one and remove the other.
 - Client site has 3 testimonials not yet used. Adding them needs a new section.
 - Real screen reader pass (VoiceOver, NVDA) still to do.
 
