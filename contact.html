@@ -30,6 +30,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400..800;1,400..600&family=Instrument+Serif:ital@0;1&display=swap"
     />
+    <link rel="stylesheet" href="assets/leaflet/leaflet.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -477,6 +478,231 @@
           </div>
         </div>
       </section>
+      <section class="section" id="find-us" aria-labelledby="map-title">
+        <div class="wrap map-grid">
+          <div class="flow" data-reveal>
+            <p class="eyebrow">
+              <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                <path
+                  d="M12.00 1.60 L14.72 8.86 L22.46 9.20 L16.39 14.03 L18.47 21.50 L12.00 17.22 L5.53 21.50 L7.61 14.03 L1.54 9.20 L9.28 8.86Z"
+                /></svg
+              >Find us
+            </p>
+            <h2 id="map-title" style="font-size: var(--step-3)">Our office and the counties we serve.</h2>
+            <p class="muted">
+              Our clinicians visit patients at home across Los Angeles, Orange, Ventura and San Bernardino counties. Our
+              office in Burbank is where every visit is planned.
+            </p>
+            <div class="map-views" role="group" aria-labelledby="map-views-label" data-map-ui hidden>
+              <p class="map-views-label" id="map-views-label">Show on the map</p>
+              <ul role="list">
+                <li>
+                  <button class="map-choice" type="button" data-map-view="all" aria-pressed="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="M5 12.5l4.5 4.5L19 7.5" /></svg
+                    >All four counties
+                  </button>
+                </li>
+                <li>
+                  <button class="map-choice" type="button" data-map-view="office" aria-pressed="false">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="M5 12.5l4.5 4.5L19 7.5" /></svg
+                    >Our Burbank office
+                  </button>
+                </li>
+                <li>
+                  <button class="map-choice" type="button" data-map-view="los-angeles" aria-pressed="false">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="M5 12.5l4.5 4.5L19 7.5" /></svg
+                    >Los Angeles County
+                  </button>
+                </li>
+                <li>
+                  <button class="map-choice" type="button" data-map-view="orange" aria-pressed="false">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="M5 12.5l4.5 4.5L19 7.5" /></svg
+                    >Orange County
+                  </button>
+                </li>
+                <li>
+                  <button class="map-choice" type="button" data-map-view="ventura" aria-pressed="false">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="M5 12.5l4.5 4.5L19 7.5" /></svg
+                    >Ventura County
+                  </button>
+                </li>
+                <li>
+                  <button class="map-choice" type="button" data-map-view="san-bernardino" aria-pressed="false">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="M5 12.5l4.5 4.5L19 7.5" /></svg
+                    >San Bernardino County
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <p><strong>Our office</strong><br />220 N Glenoaks Blvd, Suite C<br />Burbank, CA 91502</p>
+            <p style="--flow: 0.4em">
+              <a href="https://www.google.com/maps/search/?api=1&query=220+N+Glenoaks+Blvd+Suite+C+Burbank+CA+91502"
+                >Get directions on Google Maps</a
+              >
+            </p>
+          </div>
+          <div class="map-col">
+            <div class="map" id="area-map">
+              <p class="map-fallback">
+                The interactive map needs JavaScript. Our office address and the counties we serve are listed in this
+                section.
+              </p>
+            </div>
+            <div class="map-tools" role="group" aria-label="Map controls" data-map-ui hidden>
+              <div class="map-tools-set">
+                <button class="map-tool" type="button" data-map-zoom="1" aria-label="Zoom in">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+                <button class="map-tool" type="button" data-map-zoom="-1" aria-label="Zoom out">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+              <div class="map-tools-set">
+                <button class="map-tool" type="button" data-map-pan="-1,0" aria-label="Move map left">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M19 12H5M11.5 5.5L5 12l6.5 6.5" />
+                  </svg>
+                </button>
+                <button class="map-tool" type="button" data-map-pan="0,-1" aria-label="Move map up">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M12 19V5M5.5 11.5L12 5l6.5 6.5" />
+                  </svg>
+                </button>
+                <button class="map-tool" type="button" data-map-pan="0,1" aria-label="Move map down">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M12 5v14M5.5 12.5L12 19l6.5-6.5" />
+                  </svg>
+                </button>
+                <button class="map-tool" type="button" data-map-pan="1,0" aria-label="Move map right">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14M12.5 5.5L19 12l-6.5 6.5" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <p class="map-help" id="area-map-help" data-map-ui hidden>
+              Use the buttons to zoom and move the map, or drag it with a mouse. When the map has keyboard focus, the
+              arrow keys move it and the plus and minus keys zoom.
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
     <footer class="site-footer on-navy">
       <div class="wrap">
@@ -529,5 +755,8 @@
       </div>
     </footer>
     <script src="main.js" defer></script>
+    <script src="assets/leaflet/leaflet.js" defer></script>
+    <script src="assets/service-area.js" defer></script>
+    <script src="map.js" defer></script>
   </body>
 </html>
