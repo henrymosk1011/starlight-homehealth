@@ -26,7 +26,7 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
 - Canonical contact details (use these exact values everywhere):
   - Phone (818) 849-6044, link `tel:+18188496044`
   - Fax (844) 269-6817
-  - Email starhhcare@gmail.com
+  - Email info@starlighthh.com
   - 220 N Glenoaks Blvd, Suite C, Burbank, CA 91502
   - Monday to Friday, 9 am to 5 pm; Saturday and Sunday on call
   - Service area: Los Angeles, Orange, Ventura and San Bernardino counties
@@ -36,6 +36,7 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
 
 - The top bar, header, footer and closing CTA band are repeated in all 8 HTML files. When you change one, change all 8 the same way.
 - The current page link in the main nav gets `aria-current="page"`.
+- Internal links leave off `.html` (`about`, `services#wound`); home links use `./`. GitHub Pages serves them as clean URLs, and `npm run serve` does the same locally.
 - Each page has a unique `<title>` in the form "Page | Starlight Home Health Services" (the home page is just the business name).
 - Design tokens (color, type scale, easing) live in `:root` at the top of `styles.css`.
 - Fonts: Instrument Serif (display) and Figtree (body) from Google Fonts.
