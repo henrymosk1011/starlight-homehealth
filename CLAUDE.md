@@ -11,7 +11,8 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
 - Keep the patterns already in place:
   - Skip link, landmarks (`header`, `nav`, `main`, `footer`, the top bar `aside`), and one `h1` per page.
   - Animated headlines use a visually hidden plain sentence (`.sr-only`) plus an `aria-hidden` animated copy (`.split`). Keep both in sync.
-  - Decorative SVG, stars, the hero art, the hero chips and the service ticker are `aria-hidden="true"`.
+  - Decorative SVG, stars, the hero art, the hero chips, the hero sky (`.hero-sky`) and the service ticker are `aria-hidden="true"`.
+  - The home hero is a dark night sky panel (`.hero.on-navy`). Text on it uses `--paper` or `--lav` only; buttons there are `.btn-gold` and `.btn-light`. Bright stars stay behind the art; the `.hero-sky` mask keeps them at 10 percent behind the copy. Keep the aurora, pointer glow and star strengths as they are unless you recheck contrast against the rendered background, since axe cannot measure text on gradients.
   - Scroll reveals (`data-reveal`) only hide content below the first screen, and only when motion is on. Content must be readable with JavaScript off.
   - Put `data-reveal` on a wrapper `div`, never directly on an element with its own text (like a `p`). WAVE reads a text element's own opacity 0 as a 1:1 contrast error.
   - The "Pause animations" switch (`.motion-toggle`, `aria-pressed`) and `prefers-reduced-motion` must stop all motion. New animations go under `html.motion-on` so `html.motion-off` stops them.

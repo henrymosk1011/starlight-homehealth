@@ -1,13 +1,16 @@
 /* Starlight Home Health Services
    Layout: a generous white field with asymmetric editorial columns. The rising star
-   and roofline from the logo repeat as the motif, and navy is saved for one immersive
-   band per page. Light theme only, by design, to match the brand mark. */
+   and roofline from the logo repeat as the motif. The home hero is a starlit night
+   panel, and inner pages save navy for one immersive band. Light theme only, by
+   design, to match the brand mark. */
 :root {
   --paper: #ffffff;
   --mist: #f4f3fa;
   --ink: #15122e;
   --navy: #261b69;
   --navy-deep: #1b1350;
+  --night: #100a33;
+  --violet: #4a3aa8;
   --slate: #545768;
   --gold: #fccc27;
   --line: #e3e1ee;
@@ -732,10 +735,80 @@ h2 em,
   }
 }
 
-/* Hero */
+/* Hero: a starlit night panel. Text on it uses --paper or --lav, which stay above 7:1
+   on every part of the sky. Bright stars only sit behind the art; behind the copy they
+   are masked down to a faint texture so no pixel under the text drops below 4.5:1. */
 .hero {
+  --inset: clamp(0.5rem, 1.4vw, 1.25rem);
+  --pad-end: clamp(3.5rem, 8vw, 7rem);
+  --mx: 78%;
+  --my: 42%;
   position: relative;
-  padding-block: clamp(3rem, 7vw, 6.5rem) clamp(3.5rem, 8vw, 7rem);
+  isolation: isolate;
+  overflow-x: clip;
+  margin-inline: var(--inset);
+  border-radius: clamp(1.25rem, 3vw, 2.5rem);
+  padding-block: clamp(3rem, 7vw, 6.5rem) var(--pad-end);
+  background:
+    radial-gradient(55% 60% at 100% 0%, color-mix(in srgb, var(--gold) 9%, transparent), transparent 70%),
+    radial-gradient(65% 75% at 0% 100%, color-mix(in srgb, var(--violet) 30%, transparent), transparent 70%),
+    linear-gradient(160deg, var(--night) 0%, var(--navy-deep) 45%, var(--navy) 100%);
+  background-color: var(--navy-deep);
+  color: var(--lav);
+}
+/* Soft glow that follows the pointer, like the navy bands */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    36rem circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--lav) 10%, transparent),
+    transparent 60%
+  );
+  pointer-events: none;
+}
+.hero-sky {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, rgb(0 0 0 / 0.1) 53%, #000 70%);
+  mask-image: linear-gradient(90deg, rgb(0 0 0 / 0.1) 53%, #000 70%);
+}
+.hero-sky span {
+  position: absolute;
+  inset: 0;
+}
+.hero-sky .s1 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='331' height='331' fill='white'%3E%3Ccircle cx='0.6' cy='108.7' r='0.67' fill-opacity='0.55'/%3E%3Ccircle cx='103.0' cy='311.2' r='0.84' fill-opacity='0.49'/%3E%3Ccircle cx='132.7' cy='4.3' r='0.75' fill-opacity='0.68'/%3E%3Ccircle cx='321.7' cy='245.8' r='0.82' fill-opacity='0.61'/%3E%3Ccircle cx='166.1' cy='201.6' r='0.71' fill-opacity='0.43'/%3E%3Ccircle cx='269.1' cy='16.3' r='0.66' fill-opacity='0.37'/%3E%3Ccircle cx='40.4' cy='207.7' r='0.80' fill-opacity='0.69'/%3E%3Ccircle cx='242.6' cy='136.5' r='0.55' fill-opacity='0.66'/%3E%3Ccircle cx='81.9' cy='56.6' r='0.84' fill-opacity='0.62'/%3E%3Ccircle cx='187.9' cy='72.4' r='0.66' fill-opacity='0.47'/%3E%3Ccircle cx='292.8' cy='318.1' r='0.59' fill-opacity='0.57'/%3E%3Ccircle cx='17.0' cy='280.3' r='0.71' fill-opacity='0.48'/%3E%3Ccircle cx='217.9' cy='265.6' r='0.86' fill-opacity='0.60'/%3E%3Ccircle cx='308.6' cy='75.9' r='0.67' fill-opacity='0.40'/%3E%3Ccircle cx='147.5' cy='132.4' r='0.81' fill-opacity='0.64'/%3E%3Ccircle cx='62.3' cy='153.2' r='0.58' fill-opacity='0.52'/%3E%3C/svg%3E");
+}
+.hero-sky .s2 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='547' height='547' fill='white'%3E%3Ccircle cx='376.4' cy='37.2' r='1.12' fill-opacity='0.78'/%3E%3Ccircle cx='95.6' cy='427.0' r='1.01' fill-opacity='0.62'/%3E%3Ccircle cx='478.8' cy='212.5' r='1.25' fill-opacity='0.81'/%3E%3Ccircle cx='236.1' cy='488.9' r='0.95' fill-opacity='0.70'/%3E%3Ccircle cx='31.2' cy='145.7' r='1.18' fill-opacity='0.58'/%3E%3Ccircle cx='284.9' cy='264.0' r='1.06' fill-opacity='0.84'/%3E%3Ccircle cx='170.3' cy='92.8' r='1.21' fill-opacity='0.66'/%3E%3Ccircle cx='415.6' cy='381.5' r='0.98' fill-opacity='0.74'/%3E%3Ccircle cx='121.9' cy='301.4' r='1.29' fill-opacity='0.80'/%3E%3C/svg%3E");
+  background-position: 120px 60px;
+}
+.hero-sky .s3 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='829' height='829' fill='white'%3E%3Ccircle cx='612.4' cy='118.9' r='1.62' fill-opacity='0.92'/%3E%3Ccircle cx='184.7' cy='563.2' r='1.41' fill-opacity='0.81'/%3E%3Ccircle cx='447.1' cy='702.6' r='1.77' fill-opacity='0.88'/%3E%3Ccircle cx='71.5' cy='240.3' r='1.35' fill-opacity='0.78'/%3E%3Ccircle cx='731.8' cy='459.0' r='1.53' fill-opacity='0.94'/%3E%3Cpath fill-opacity='.9' d='M523.6 284.9L524.5 290.6 530.3 291.5 524.5 292.4 523.6 298.1 522.7 292.4 516.9 291.5 522.7 290.6Z'/%3E%3Cpath fill-opacity='.9' d='M298.2 77.4L299.1 82.5 304.2 83.4 299.1 84.3 298.2 89.4 297.3 84.3 292.2 83.4 297.3 82.5Z'/%3E%3C/svg%3E");
+  background-position: 300px 140px;
+}
+.hero-sky .shoot {
+  display: none;
+}
+/* Moonlight behind the art */
+.hero .hero-art {
+  isolation: isolate;
+}
+.hero .hero-art::before {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--lav) 28%, transparent), transparent);
 }
 .hero-grid {
   display: grid;
@@ -754,6 +827,16 @@ h2 em,
 }
 .hero h1 {
   max-width: 12ch;
+  color: var(--paper);
+  hyphens: auto;
+  overflow-wrap: anywhere;
+}
+/* With phone text set very large, let the call button wrap instead of widening the column */
+.hero .btn[href^="tel:"] {
+  white-space: normal;
+}
+.hero .lead {
+  color: var(--lav);
 }
 .hero-meta {
   display: flex;
@@ -762,7 +845,7 @@ h2 em,
   padding: 0;
   margin: 0.5rem 0 0;
   list-style: none;
-  color: var(--slate);
+  color: var(--lav);
   font-size: var(--step--1);
   font-weight: 600;
 }
@@ -774,16 +857,31 @@ h2 em,
 .hero-meta svg {
   width: 1.1rem;
   height: 1.1rem;
-  color: var(--navy);
+  color: var(--gold);
 }
 @media (max-width: 900px) {
   .hero-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .hero-art {
     max-width: 460px;
     justify-self: center;
     width: 100%;
+  }
+  /* The art sits under the copy here, so the bright stars start partway up the art.
+     --art matches the art's rendered height: the grid width, capped at 460px. */
+  .hero-sky {
+    --art: min(460px, 100vw - 2 * var(--gutter) - 2 * var(--inset));
+    -webkit-mask-image: linear-gradient(
+      0deg,
+      #000 calc(var(--pad-end) + var(--art) * 0.55),
+      rgb(0 0 0 / 0.1) calc(var(--pad-end) + var(--art) * 0.9)
+    );
+    mask-image: linear-gradient(
+      0deg,
+      #000 calc(var(--pad-end) + var(--art) * 0.55),
+      rgb(0 0 0 / 0.1) calc(var(--pad-end) + var(--art) * 0.9)
+    );
   }
 }
 
@@ -900,6 +998,13 @@ h2 em,
   .chip-b {
     right: 0;
   }
+  /* Very large text: chips wrap inside the art instead of running off the screen */
+  .chip-wrap {
+    max-width: 100%;
+  }
+  .chip {
+    white-space: normal;
+  }
 }
 
 /* Page hero (inner pages) */
@@ -959,6 +1064,9 @@ h2 em,
   padding-block: clamp(1.5rem, 3vw, 2.5rem);
   overflow: hidden;
   border-block: 1px solid var(--line);
+}
+.hero + .ticker {
+  border-top: 0;
 }
 .ticker-row {
   display: flex;
@@ -2463,6 +2571,51 @@ html.motion-on .chip {
   animation-delay: calc(var(--o, 0) * 160ms + 1.4s);
 }
 
+/* Hero sky: slow twinkle, and a shooting star over the art on wide screens.
+   Both are slow and small (no flashing), and the motion switch stops them. */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+@keyframes shoot {
+  0% {
+    opacity: 0;
+    transform: rotate(24deg) translateX(0);
+  }
+  2% {
+    opacity: 1;
+  }
+  9%,
+  100% {
+    opacity: 0;
+    transform: rotate(24deg) translateX(18rem);
+  }
+}
+html.motion-on .hero-sky .s2 {
+  animation: twinkle 5s ease-in-out infinite;
+}
+html.motion-on .hero-sky .s3 {
+  animation: twinkle 7.5s ease-in-out 1.8s infinite;
+}
+@media (min-width: 901px) {
+  html.motion-on .hero-sky .shoot {
+    display: block;
+    inset: 9% auto auto 64%;
+    width: 8rem;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--paper));
+    opacity: 0;
+    transform-origin: left center;
+    animation: shoot 12s ease-in 4s infinite;
+  }
+}
+
 /* Motion off: everything rests in its final state */
 html.motion-off *,
 html.motion-off *::before,
@@ -2528,6 +2681,9 @@ html.motion-off::view-transition-group(*) {
   }
   .progress,
   .band::before,
+  .hero::before,
+  .hero-sky,
+  .hero .hero-art::before,
   .ring {
     display: none;
   }
@@ -2548,5 +2704,26 @@ html.motion-off::view-transition-group(*) {
   .is-pending {
     opacity: 1 !important;
     transform: none !important;
+  }
+  .hero {
+    margin: 0;
+    background: none;
+    color: var(--ink);
+  }
+  .hero::before,
+  .hero-sky {
+    display: none;
+  }
+  .hero h1 {
+    color: var(--navy);
+  }
+  .hero .eyebrow,
+  .hero .lead,
+  .hero-meta {
+    color: var(--slate);
+  }
+  .hero .btn-light {
+    color: var(--navy);
+    border-color: var(--navy);
   }
 }

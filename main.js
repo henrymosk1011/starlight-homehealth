@@ -300,8 +300,8 @@
   window.addEventListener("resize", onScroll);
   update();
 
-  /* Soft spotlight that follows the pointer on navy bands */
-  document.querySelectorAll(".band").forEach(function (band) {
+  /* Soft spotlight that follows the pointer on navy bands and the home hero */
+  document.querySelectorAll(".band, .hero").forEach(function (band) {
     band.addEventListener("pointermove", function (e) {
       if (!motionOn()) return;
       var r = band.getBoundingClientRect();
