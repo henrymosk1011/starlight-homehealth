@@ -23,13 +23,13 @@ The contact page also loads `map.js`, Leaflet (`assets/leaflet/`) and the county
 
 ## Preview locally
 
-Open `index.html` in a browser, or run a local server:
+Run the local server, which serves pages without `.html` the same way GitHub Pages does:
 
 ```bash
-python3 -m http.server 8080
+npm run serve
 ```
 
-Then visit http://localhost:8080
+Then visit http://localhost:8080. Links between pages leave off `.html` (for example `about`, `services#wound`, and `./` for home), so opening the files straight from disk will not follow them.
 
 ## Accessibility test
 
