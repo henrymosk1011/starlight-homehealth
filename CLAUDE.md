@@ -13,6 +13,7 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
   - Animated headlines use a visually hidden plain sentence (`.sr-only`) plus an `aria-hidden` animated copy (`.split`). Keep both in sync.
   - Decorative SVG, stars, the hero art, the hero chips and the service ticker are `aria-hidden="true"`.
   - Scroll reveals (`data-reveal`) only hide content below the first screen, and only when motion is on. Content must be readable with JavaScript off.
+  - Put `data-reveal` on a wrapper `div`, never on a text element like `p` or `h2`. WAVE reads text that is itself at opacity 0 as a contrast error.
   - The "Pause animations" switch (`.motion-toggle`, `aria-pressed`) and `prefers-reduced-motion` must stop all motion. New animations go under `html.motion-on` so `html.motion-off` stops them.
   - Animated stat counters are `aria-hidden` with a `.sr-only` final value next to them.
   - Forms: every field has a visible label, "(required)" or "(optional)" text, and hints tied with `aria-describedby`. Validation is in `main.js` (`data-validate`, `data-label`, `data-error`), with an error summary that takes focus and inline errors tied to each field.
