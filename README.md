@@ -2,7 +2,7 @@
 
 Multi page website for Starlight Home Health Services, a home health agency in Burbank, CA.
 
-**Live preview:** https://henrymosk1011.github.io/starlight-homehealth/
+**Live site:** https://www.starlighthh.com
 
 ## Pages
 
@@ -45,10 +45,10 @@ npm test
 
 GitHub Pages serves the `main` branch from the repo root. Every push to `main` updates the live site within a minute or two.
 
-## Before launch
+The custom domain is set by the `CNAME` file (`www.starlighthh.com`). DNS is managed in the client's Wix account: `www` is a CNAME to `henrymosk1011.github.io`, and the bare domain has A records for GitHub Pages (185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153). Leave the MX and TXT records alone; they run the Google Workspace email.
 
-- Remove the `<meta name="robots" content="noindex, nofollow">` line from every page so search engines can index the site
+## Still to do
+
 - Connect both forms (`contact.html` and `referrals.html`) to a form backend
-- Point the custom domain at GitHub Pages
 
 Designed by TENELEVENMEDIA.
