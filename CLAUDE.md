@@ -1,6 +1,6 @@
 # Starlight Home Health Services website
 
-Static multi page site for Starlight Home Health Services (Burbank, CA), a client of cyberXLA. Plain HTML, CSS and JavaScript. No build step and no framework. Hosted on GitHub Pages from the `main` branch root.
+Static multi page site for Starlight Home Health Services (Burbank, CA), a client of cyberXLA. Plain HTML, CSS and JavaScript. No build step and no framework. Hosted on GitHub Pages from the `main` branch root at www.starlighthh.com (set by the `CNAME` file; DNS is in the client's Wix account, and its MX and TXT records run Google Workspace email, so leave them alone).
 
 ## Top priority: accessibility
 
@@ -46,8 +46,7 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
 
 ## Open items
 
-- `noindex, nofollow` meta tag is on every page while this is a staging copy. Remove it at launch.
-- Forms do not send anything yet. Connect a HIPAA appropriate form service. The forms ask visitors not to send health information; keep that.
+- Forms do not send anything yet. Connect a HIPAA appropriate form service. The forms ask visitors not to send health information; keep that. Until a service is connected, each form has a notice (`#contact-form-status`, `#referral-form-status`) and an "after submit" panel telling visitors to call or email instead. When a service is connected, remove those notices and their `aria-describedby`, and restore a real thank you message.
 - Client to confirm: office hours (their old contact page says 5:30 pm), Careers page copy and role list.
 - Confirm the office pin on the contact map. `OFFICE` in `map.js` is estimated from nearby addresses.
 - The contact page shows two maps for comparison: the Leaflet map and a Google Maps embed (`.map-compare`) below it. Keep one and remove the other.
