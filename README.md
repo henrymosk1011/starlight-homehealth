@@ -47,6 +47,12 @@ GitHub Pages serves the `main` branch from the repo root. Every push to `main` u
 
 The custom domain is set by the `CNAME` file (`www.starlighthh.com`). DNS is managed in the client's Wix account: `www` is a CNAME to `henrymosk1011.github.io`, and the bare domain has A records for GitHub Pages (185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153). Leave the MX and TXT records alone; they run the Google Workspace email.
 
+### Cloudflare (set up, waiting on the domain move)
+
+A Cloudflare zone for `starlighthh.com` is ready in the agency Cloudflare account, on the Free plan. It has the same records as Wix (web records proxied, email records DNS only), Full SSL, Always Use HTTPS, TLS 1.2 or newer, 301 redirects from the old Wix pages (`/services-2` to `services`, `/contact-us` to `contact`), and security headers that GitHub Pages cannot send (`X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy`).
+
+It goes live when the domain's nameservers change to `kira.ns.cloudflare.com` and `viddy.ns.cloudflare.com`. Wix does not allow nameserver changes on domains it registers, so the domain first moves to Namecheap (where `cyberx.la` is), with Wix DNSSEC turned off before the move. After that, DNS changes are made in Cloudflare, not Wix.
+
 ## Still to do
 
 - Connect both forms (`contact.html` and `referrals.html`) to a form backend. Until then, both forms tell visitors the form is not connected and to call or email; remove those notices once it is.
