@@ -49,6 +49,6 @@ The custom domain is set by the `CNAME` file (`www.starlighthh.com`). DNS is man
 
 ## Still to do
 
-- Connect both forms (`contact.html` and `referrals.html`) to a form backend
+- Connect both forms (`contact.html` and `referrals.html`) to a form backend. Until then, both forms tell visitors the form is not connected and to call or email; remove those notices once it is.
 
 Designed by TENELEVENMEDIA.

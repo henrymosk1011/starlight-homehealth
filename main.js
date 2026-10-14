@@ -438,7 +438,8 @@
       summary.innerHTML = "";
 
       /* Connect a form backend here, such as a HIPAA appropriate form service or your own endpoint.
-         This preview only confirms on screen and sends nothing. */
+         Until then nothing is sent, and the panel and form notice tell visitors to call or email instead.
+         Update both when a service is connected. */
       var nameField = form.querySelector("[autocomplete='name']");
       var first = nameField ? nameField.value.trim().split(" ")[0] : "";
       if (success) {

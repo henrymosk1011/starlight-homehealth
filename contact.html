@@ -349,8 +349,29 @@
               data-success="contact-success"
               novalidate
               aria-labelledby="form-title"
+              aria-describedby="contact-form-status"
             >
               <div class="error-summary" tabindex="-1" hidden></div>
+              <div class="notice" id="contact-form-status">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7.5v5.5M12 16.5h.01" />
+                </svg>
+                <p>
+                  <strong>Our online form is not connected yet,</strong> so messages sent here do not reach us. Please call
+                  <a href="tel:+18188496044">(818) 849-6044</a> or email
+                  <a href="mailto:info@starlighthh.com">info@starlighthh.com</a>.
+                </p>
+              </div>
               <div class="form-row">
                 <div class="field">
                   <label for="c-name">Full name <span class="req">(required)</span></label
@@ -467,12 +488,13 @@
                     d="M12.00 1.60 L14.72 8.86 L22.46 9.20 L16.39 14.03 L18.47 21.50 L12.00 17.22 L5.53 21.50 L7.61 14.03 L1.54 9.20 L9.28 8.86Z"
                   /></svg
               ></span>
-              <h2>Thank you<span data-first-name></span>.</h2>
+              <h2>One more step<span data-first-name></span>.</h2>
               <p>
-                Our team will reach out during business hours, Monday to Friday, 9 am to 5 pm. If you need help sooner,
-                call (818) 849-6044.
+                Our online form is not connected yet, so this message was not sent. Please call us at
+                <a href="tel:+18188496044">(818) 849-6044</a> or email
+                <a href="mailto:info@starlighthh.com">info@starlighthh.com</a>. We answer Monday to Friday, 9 am to 5 pm.
               </p>
-              <button class="btn btn-ghost" type="button" data-reset-form="contact-form">Send another message</button>
+              <button class="btn btn-ghost" type="button" data-reset-form="contact-form">Back to the form</button>
             </div>
           </div>
         </div>
