@@ -1,0 +1,26 @@
+# Contact form endpoint for www.starlighthh.com.
+# Deploy with: npx wrangler deploy --config worker/wrangler.toml
+# Set the key once with: npx wrangler secret put RESEND_API_KEY --config worker/wrangler.toml
+name = "starlight-contact"
+main = "contact.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[vars]
+ALLOWED_ORIGINS = "https://www.starlighthh.com,https://starlighthh.com"
+CONTACT_FROM = "Starlight Website <website@forms.starlighthh.com>"
+CONTACT_TO = "info@starlighthh.com"
+SITE_URL = "https://www.starlighthh.com"
+
+# 5 messages per minute per visitor IP address
+[[ratelimits]]
+name = "CONTACT_LIMITER"
+namespace_id = "1201"
+
+  [ratelimits.simple]
+  limit = 5
+  period = 60
+
+[observability.logs]
+enabled = true
+invocation_logs = false

@@ -18,6 +18,7 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
   - The "Pause animations" switch (`.motion-toggle`, `aria-pressed`) and `prefers-reduced-motion` must stop all motion. New animations go under `html.motion-on` so `html.motion-off` stops them.
   - Animated stat counters are `aria-hidden` with a `.sr-only` final value next to them.
   - Forms: every field has a visible label, "(required)" or "(optional)" text, and hints tied with `aria-describedby`. Validation is in `main.js` (`data-validate`, `data-label`, `data-error`), with an error summary that takes focus and inline errors tied to each field.
+  - A form with an `action` sends to it (see "Contact form" in the README). While sending, the form gets `data-sending` (not `aria-busy`, which can mute the status line), the button `aria-disabled`, and the `[data-form-status]` line (a `role="status"` region) says "Sending your message." If sending fails, the error summary says so, takes focus, and gives the phone number and email; the visitor's input stays in the form. With scripts off, the form posts straight to the Worker, which answers with its own short page.
   - Touch targets are at least 24 by 24 px. Most controls are 44 px or more.
   - The contact page map (`map.js`, Leaflet in `assets/leaflet`) is extra: the address and counties are also in the page text. Dragging has button alternatives (zoom and move), scroll wheel zoom is off, and the motion switch covers its pans and zooms.
 - Colors come from the tokens at the top of `styles.css`. Body text must stay at 4.5:1 contrast or higher. `--gold` is never used for text on white; it fails contrast there.
@@ -42,12 +43,15 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
 - Internal links leave off `.html` (`about`, `services#wound`); home links use `./`. GitHub Pages serves them as clean URLs, and `npm run serve` does the same locally.
 - Each page has a unique `<title>` in the form "Page | Starlight Home Health Services" (the home page is just the business name).
 - Design tokens (color, type scale, easing) live in `:root` at the top of `styles.css`.
+- `worker/` holds the contact form Worker. GitHub Pages serves it as plain files, so it must never hold secrets; the Resend key lives only in the Worker's encrypted secret `RESEND_API_KEY`.
 - Fonts: Instrument Serif (display) and Figtree (body) from Google Fonts.
 
 ## Open items
 
 - Move DNS to Cloudflare (see README, Hosting). Wix blocks nameserver changes, so the domain moves from Wix to Namecheap, then its nameservers change to `kira.ns.cloudflare.com` and `viddy.ns.cloudflare.com`. Wix DNSSEC is already off. Turning off Wix privacy started ICANN's 60 day transfer lock, so the transfer can only start on 13 December 2026. Cloudflare deletes Free zones left pending for 28 days, so the zone made on 14 October 2026 will be gone by then; recreate it from the README settings before the transfer. In Wix, never click "Try Again" on the "Your domain is set to point away from Wix" warning: it would point the domain back at the old Wix site. Once Cloudflare is active, make DNS changes there and update this file.
-- Forms do not send anything yet. Connect a HIPAA appropriate form service. The forms ask visitors not to send health information; keep that. Until a service is connected, each form has a notice (`#contact-form-status`, `#referral-form-status`) and an "after submit" panel telling visitors to call or email instead. When a service is connected, remove those notices and their `aria-describedby`, and restore a real thank you message.
+- The contact form sends through Resend, by way of the Cloudflare Worker in `worker/` (see README, Contact form). Resend is not HIPAA compliant and cannot sign a Business Associate Agreement; the owner chose it anyway on 15 October 2026 with that known. Keep the "do not include medical details" hint, keep form content out of Worker logs, and revisit if Resend starts offering a BAA.
+- The referral form does not send anything yet. It keeps its notice (`#referral-form-status`) and an "after submit" panel telling visitors to call or email instead. Referrals are more likely to carry health information, so connect it only to a service that signs a BAA. When it is connected, give the form an `action`, remove the notice and its `aria-describedby`, and restore a real thank you message.
+- Once Cloudflare DNS is active, the Worker can move from `starlight-contact.henrymm.workers.dev` to a route on the site's own domain. Then update the contact form `action`.
 - Client to confirm: office hours (their old contact page says 5:30 pm), Careers page copy and role list.
 - Confirm the office pin on the contact map. `OFFICE` in `map.js` is estimated from nearby addresses.
 - The contact page shows two maps for comparison: the Leaflet map and a Google Maps embed (`.map-compare`) below it. Keep one and remove the other.

@@ -385,9 +385,75 @@
     return problems;
   }
 
+  var PHONE_LINK = '<a href="tel:+18188496044">(818) 849-6044</a>';
+  var EMAIL_LINK = '<a href="mailto:info@starlighthh.com">info@starlighthh.com</a>';
+
+  function showSuccess(form, success) {
+    var nameField = form.querySelector("[autocomplete='name']");
+    var first = nameField ? nameField.value.trim().split(" ")[0] : "";
+    var nameSlot = success.querySelector("[data-first-name]");
+    if (nameSlot) nameSlot.textContent = first ? ", " + first : "";
+    form.hidden = true;
+    success.hidden = false;
+    var heading = success.querySelector("h2");
+    heading.setAttribute("tabindex", "-1");
+    heading.focus();
+  }
+
+  function showSendError(summary, status) {
+    var reason =
+      status === 429
+        ? "Several messages were sent from this connection in the last minute. Please wait a minute and try again, or call "
+        : "Something went wrong on our side. Please try again in a moment, or call ";
+    summary.innerHTML =
+      "<h2>Your message was not sent</h2><p>" + reason + PHONE_LINK + " or email " + EMAIL_LINK + ".</p>";
+    summary.hidden = false;
+    summary.focus();
+  }
+
+  /* Posts the form as JSON to its action URL (the contact form Worker in worker/contact.js) */
+  function send(form, done) {
+    var data = {};
+    new FormData(form).forEach(function (value, key) {
+      data[key] = value;
+    });
+    var controller = window.AbortController ? new AbortController() : null;
+    var timer = controller
+      ? window.setTimeout(function () {
+          controller.abort();
+        }, 15000)
+      : null;
+    fetch(form.getAttribute("action"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(data),
+      credentials: "omit",
+      signal: controller ? controller.signal : undefined,
+    })
+      .then(function (res) {
+        return res.json().then(
+          function (body) {
+            return { ok: res.ok && !!body && body.ok === true, status: res.status };
+          },
+          function () {
+            return { ok: false, status: res.status };
+          },
+        );
+      })
+      .catch(function () {
+        return { ok: false, status: 0 };
+      })
+      .then(function (result) {
+        if (timer) window.clearTimeout(timer);
+        done(result);
+      });
+  }
+
   document.querySelectorAll("form[data-accessible-form]").forEach(function (form) {
     var summary = form.querySelector(".error-summary");
     var success = document.getElementById(form.getAttribute("data-success"));
+    /* Scripts handle validation. Without scripts, the browser's own checks run instead. */
+    form.noValidate = true;
 
     /* After a failed submit, fix messages as people correct each field */
     form.querySelectorAll("[data-validate]").forEach(function (control) {
@@ -406,6 +472,7 @@
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+      if (form.hasAttribute("data-sending")) return;
       var problems = validate(form);
       if (problems.length) {
         var list = problems
@@ -437,20 +504,33 @@
       summary.hidden = true;
       summary.innerHTML = "";
 
-      /* Connect a form backend here, such as a HIPAA appropriate form service or your own endpoint.
-         Until then nothing is sent, and the panel and form notice tell visitors to call or email instead.
-         Update both when a service is connected. */
-      var nameField = form.querySelector("[autocomplete='name']");
-      var first = nameField ? nameField.value.trim().split(" ")[0] : "";
-      if (success) {
-        var nameSlot = success.querySelector("[data-first-name]");
-        if (nameSlot) nameSlot.textContent = first ? ", " + first : "";
-        form.hidden = true;
-        success.hidden = false;
-        var heading = success.querySelector("h2");
-        heading.setAttribute("tabindex", "-1");
-        heading.focus();
+      /* A form without an action (the referral form) is not connected yet. Nothing is sent, and its
+         notice and after submit panel tell visitors to call or email instead. */
+      if (!form.getAttribute("action")) {
+        if (success) showSuccess(form, success);
+        return;
       }
+      if (!window.fetch || !window.FormData) {
+        form.submit();
+        return;
+      }
+
+      var status = form.querySelector("[data-form-status]");
+      var button = form.querySelector("[type='submit']");
+      form.setAttribute("data-sending", "");
+      if (button) button.setAttribute("aria-disabled", "true");
+      if (status) status.textContent = "Sending your message.";
+      send(form, function (result) {
+        form.removeAttribute("data-sending");
+        if (button) button.removeAttribute("aria-disabled");
+        if (status) status.textContent = "";
+        if (result.ok) {
+          if (success) showSuccess(form, success);
+          form.reset();
+        } else {
+          showSendError(summary, result.status);
+        }
+      });
     });
   });
 
