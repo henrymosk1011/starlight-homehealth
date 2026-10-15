@@ -20,7 +20,7 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
   - Forms: every field has a visible label, "(required)" or "(optional)" text, and hints tied with `aria-describedby`. Validation is in `main.js` (`data-validate`, `data-label`, `data-error`), with an error summary that takes focus and inline errors tied to each field.
   - A form with an `action` sends to it (see "Contact form" in the README). While sending, the form gets `data-sending` (not `aria-busy`, which can mute the status line), the button `aria-disabled`, and the `[data-form-status]` line (a `role="status"` region) says "Sending your message." If sending fails, the error summary says so, takes focus, and gives the phone number and email; the visitor's input stays in the form. With scripts off, the form posts straight to the Worker, which answers with its own short page.
   - Touch targets are at least 24 by 24 px. Most controls are 44 px or more.
-  - The contact page map (`map.js`, Leaflet in `assets/leaflet`) is extra: the address and counties are also in the page text. Dragging has button alternatives (zoom and move), scroll wheel zoom is off, and the motion switch covers its pans and zooms.
+  - The contact page Google Maps embed (`.map-embed`) is extra: the address, a directions link and the counties are also in the page text. Keep its descriptive `title`.
 - Colors come from the tokens at the top of `styles.css`. Body text must stay at 4.5:1 contrast or higher. `--gold` is never used for text on white; it fails contrast there.
 
 ## Writing rules
@@ -53,8 +53,6 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
 - The referral form does not send anything yet. It keeps its notice (`#referral-form-status`) and an "after submit" panel telling visitors to call or email instead. Referrals are more likely to carry health information, so connect it only to a service that signs a BAA. When it is connected, give the form an `action`, remove the notice and its `aria-describedby`, and restore a real thank you message.
 - Once Cloudflare DNS is active, the Worker can move from `starlight-contact.henrymm.workers.dev` to a route on the site's own domain. Then update the contact form `action`.
 - Client to confirm: office hours (their old contact page says 5:30 pm), Careers page copy and role list.
-- Confirm the office pin on the contact map. `OFFICE` in `map.js` is estimated from nearby addresses.
-- The contact page shows two maps for comparison: the Leaflet map and a Google Maps embed (`.map-compare`) below it. Keep one and remove the other.
 - Client site has 3 testimonials not yet used. Adding them needs a new section.
 - Real screen reader pass (VoiceOver, NVDA) still to do.
 
