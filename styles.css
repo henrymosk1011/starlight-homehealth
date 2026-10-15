@@ -2240,6 +2240,20 @@ fieldset[aria-invalid="true"] .choice label {
   color: var(--danger);
   font-weight: 600;
 }
+.error-summary p {
+  margin: 0.5rem 0 0;
+}
+.form-status {
+  margin: 0.75rem 0 0;
+  font-size: var(--step--1);
+  color: var(--slate);
+}
+.form-status:empty {
+  margin: 0;
+}
+form[data-sending] .btn[type="submit"] {
+  cursor: progress;
+}
 .form-success {
   display: grid;
   gap: 1rem;
