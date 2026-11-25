@@ -43,7 +43,7 @@ Full WCAG 2.2 Level AA compliance is the most important requirement. Every chang
 - Internal links leave off `.html` (`about`, `services#wound`); home links use `./`. GitHub Pages serves them as clean URLs, and `npm run serve` does the same locally.
 - Each page has a unique `<title>` in the form "Page | Starlight Home Health Services" (the home page is just the business name).
 - Design tokens (color, type scale, easing) live in `:root` at the top of `styles.css`.
-- `worker/` holds the old contact form Worker, no longer used (it can't send since `forms.starlighthh.com` left Resend). GitHub Pages serves it as plain files, so it must never hold secrets; its Resend key lives only in the Worker's encrypted secret `RESEND_API_KEY`.
+- `worker/` holds the code of the old contact form Worker, kept for reference; the Worker itself and its Resend key were deleted on 25 November 2026. GitHub Pages serves it as plain files, so it must never hold secrets; its Resend key lives only in the Worker's encrypted secret `RESEND_API_KEY`.
 - Fonts: Instrument Serif (display) and Figtree (body) from Google Fonts.
 
 ## Open items
