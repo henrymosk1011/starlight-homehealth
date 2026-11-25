@@ -17,7 +17,7 @@ Multi page website for Starlight Home Health Services, a home health agency in B
 | `contact.html` | Contact |
 | `accessibility.html` | Accessibility statement |
 
-Shared files: `styles.css`, `main.js`, and `assets/` for the logos and icons. `worker/` holds the contact form endpoint (see Contact form).
+Shared files: `styles.css`, `main.js`, and `assets/` for the logos and icons. `worker/` holds the old contact form Worker, the backup route while the form switches to FormSubmit (see Contact form).
 
 The contact page shows the office on an embedded Google map.
 
@@ -55,14 +55,19 @@ It goes live when the domain's nameservers change to `kira.ns.cloudflare.com` an
 
 ## Contact form
 
-The contact form posts to a Cloudflare Worker, `starlight-contact`, at `https://starlight-contact.henrymm.workers.dev/contact` (agency Cloudflare account). The Worker checks the fields again, then emails the message to info@starlighthh.com through Resend, from `Starlight Website <website@forms.starlighthh.com>`. When the visitor gives an email, replying to the message answers them. The code is `worker/contact.js`, and its settings are in `worker/wrangler.toml`.
+The contact form sends through [FormSubmit](https://formsubmit.co), which emails each message to info@starlighthh.com as a table. `main.js` checks the fields, then posts the message from the visitor's browser to `https://formsubmit.co/ajax/info@starlighthh.com` (the form's `data-relay` address). FormSubmit refuses posts from servers, so this has to happen in the browser. When the visitor gives an email, replying to the message answers them (FormSubmit uses the field named `email` as Reply To).
 
-- **Privacy.** Resend is not HIPAA compliant and does not sign a Business Associate Agreement. The form asks visitors not to send medical details. The Worker stores nothing and logs only status codes, never form content. Resend open and click tracking are off, and TLS is required for delivery.
-- **Abuse protection.** Only `https://www.starlighthh.com` and `https://starlighthh.com` may post (CORS and an `Origin` check). Each IP address gets 5 messages a minute. A hidden honeypot field (`c-website`) quietly drops bot posts, and requests over 16 KB are refused.
-- **Sending domain.** `forms.starlighthh.com` is verified in the agency Resend account. Its records are in Wix DNS and in the waiting Cloudflare zone: TXT `resend._domainkey.forms`, MX and TXT `send.forms`, and CNAME `rsend.forms`. They sit on the `forms` subdomain, so the Google Workspace MX, SPF and verification records are untouched. Using a subdomain also means a leaked key cannot send as `@starlighthh.com`.
-- **API key.** "starlighthh contact form worker" in Resend is sending only and limited to `forms.starlighthh.com`. It lives only in the Worker's encrypted secret `RESEND_API_KEY`. To rotate it, create a new key in Resend, run `npx wrangler secret put RESEND_API_KEY --config worker/wrangler.toml`, then delete the old key.
-- **Deploying changes.** `npx wrangler deploy --config worker/wrangler.toml`.
-- **Without JavaScript.** The form still posts to the Worker, which answers with a short confirmation or error page.
+- **Activation.** The first message makes FormSubmit send an "Activate Form" email to info@starlighthh.com. Nothing is delivered through FormSubmit until someone clicks the link in it (check spam). A new address in `data-relay` needs activating again.
+- **Backup route.** While `data-fallback` is set on the form, a message FormSubmit does not take goes to the old Worker below instead. It is there for the switch over only: once FormSubmit is activated and `forms.starlighthh.com` leaves Resend, the Worker can no longer send, so remove `data-fallback`. Without either, the form says the message was not sent and gives the phone number and email.
+- **Privacy.** FormSubmit is not HIPAA compliant and does not sign a Business Associate Agreement; the owner chose it on 25 November 2026 with that known. The form asks visitors not to send medical details. Keep that hint.
+- **Abuse protection.** A hidden honeypot field (`_honey`, which FormSubmit also honors) quietly drops bot posts. FormSubmit's own captcha page is off (`_captcha` is `false`).
+- **Without JavaScript.** The form posts straight to FormSubmit (the form's `action`), which shows its own thank you page.
+
+### The old Worker
+
+Until 25 November 2026 the form posted to a Cloudflare Worker, `starlight-contact`, at `https://starlight-contact.henrymm.workers.dev/contact` (agency Cloudflare account), which emailed the message through Resend from `Starlight Website <website@forms.starlighthh.com>`. It stays in `worker/` (code `worker/contact.js`, settings `worker/wrangler.toml`) as the backup route during the switch. Once `forms.starlighthh.com` is removed from Resend it can no longer send; to take it off Cloudflare then: `npx wrangler delete --config worker/wrangler.toml`.
+
+- The Resend records for `forms.starlighthh.com` (TXT `resend._domainkey.forms`, MX and TXT `send.forms`, CNAME `rsend.forms`) are in Wix DNS and the waiting Cloudflare zone. They can be deleted once the domain leaves Resend; the Google Workspace records stay.
 
 ## Still to do
 

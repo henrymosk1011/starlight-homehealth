@@ -411,19 +411,15 @@
     summary.focus();
   }
 
-  /* Posts the form as JSON to its action URL (the contact form Worker in worker/contact.js) */
-  function send(form, done) {
-    var data = {};
-    new FormData(form).forEach(function (value, key) {
-      data[key] = value;
-    });
+  /* Posts JSON and reads the JSON answer: { status, body }. Gives up after 15 seconds (status 0). */
+  function postJson(url, data) {
     var controller = window.AbortController ? new AbortController() : null;
     var timer = controller
       ? window.setTimeout(function () {
           controller.abort();
         }, 15000)
       : null;
-    fetch(form.getAttribute("action"), {
+    return fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(data),
@@ -433,20 +429,52 @@
       .then(function (res) {
         return res.json().then(
           function (body) {
-            return { ok: res.ok && !!body && body.ok === true, status: res.status };
+            return { status: res.status, body: body };
           },
           function () {
-            return { ok: false, status: res.status };
+            return { status: res.status, body: null };
           },
         );
       })
       .catch(function () {
-        return { ok: false, status: 0 };
+        return { status: 0, body: null };
       })
       .then(function (result) {
         if (timer) window.clearTimeout(timer);
-        done(result);
+        return result;
       });
+  }
+
+  /* Sends the contact form from the visitor's browser to FormSubmit (formsubmit.co, the form's data-relay
+     address), which emails it to the office as a table; FormSubmit refuses posts from servers, so it has to
+     be the browser. If FormSubmit does not take it and the form has a data-fallback address (the old Worker
+     in worker/contact.js), the message goes there instead. */
+  function send(form, done) {
+    var val = function (name) {
+      var el = form.elements[name];
+      return el && el.value != null ? String(el.value).trim() : "";
+    };
+    /* Hidden honeypot field. People never see it; bots that fill every field do. Pretend it worked. */
+    if (val("_honey")) return done({ ok: true, status: 200 });
+    var f = { name: val("c-name"), phone: val("c-phone"), email: val("c-email"), role: val("c-role"), message: val("c-message") };
+    var mail = { _subject: "Website message from " + f.name, _template: "table", _captcha: "false", Name: f.name, Phone: f.phone };
+    /* FormSubmit makes a field named "email" the reply address, so it is only sent when there is one */
+    if (f.email) mail.email = f.email;
+    else mail.Email = "Not given";
+    mail["I am a"] = f.role;
+    mail.Message = f.message || "No message";
+    var relay = form.getAttribute("data-relay");
+    var fallback = form.getAttribute("data-fallback");
+    (relay ? postJson(relay, mail) : Promise.resolve({ status: 0, body: null }))
+      .then(function (r) {
+        if (r.status >= 200 && r.status < 300 && r.body && String(r.body.success) === "true") return { ok: true, status: r.status };
+        if (!fallback) return { ok: false, status: r.status === 200 ? 0 : r.status };
+        var worker = { "c-name": f.name, "c-phone": f.phone, "c-email": f.email, "c-role": f.role, "c-message": f.message };
+        return postJson(fallback, worker).then(function (w) {
+          return { ok: w.status >= 200 && w.status < 300 && !!w.body && w.body.ok === true, status: w.status };
+        });
+      })
+      .then(done);
   }
 
   document.querySelectorAll("form[data-accessible-form]").forEach(function (form) {
