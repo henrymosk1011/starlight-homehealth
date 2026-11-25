@@ -17,7 +17,7 @@ Multi page website for Starlight Home Health Services, a home health agency in B
 | `contact.html` | Contact |
 | `accessibility.html` | Accessibility statement |
 
-Shared files: `styles.css`, `main.js`, and `assets/` for the logos and icons. `worker/` holds the old contact form Worker, no longer used (see Contact form).
+Shared files: `styles.css`, `main.js`, and `assets/` for the logos and icons. `worker/` holds the code of the old contact form Worker, deleted from Cloudflare (see Contact form).
 
 The contact page shows the office on an embedded Google map.
 
@@ -65,7 +65,7 @@ The contact form sends through [FormSubmit](https://formsubmit.co), which emails
 
 ### The old Worker
 
-Until 25 November 2026 the form posted to a Cloudflare Worker, `starlight-contact`, at `https://starlight-contact.henrymm.workers.dev/contact` (agency Cloudflare account), which emailed the message through Resend from `Starlight Website <website@forms.starlighthh.com>`. It was the backup route during the switch. `forms.starlighthh.com` has since left Resend, so it can no longer send and the form no longer uses it. It stays in `worker/` (code `worker/contact.js`, settings `worker/wrangler.toml`) in case it is wanted again (that needs the domain back in Resend and a new key). To take it off Cloudflare: `npx wrangler delete --config worker/wrangler.toml`.
+Until 25 November 2026 the form posted to a Cloudflare Worker, `starlight-contact`, at `https://starlight-contact.henrymm.workers.dev/contact` (agency Cloudflare account), which emailed the message through Resend from `Starlight Website <website@forms.starlighthh.com>`. It was the backup route during the switch. On 25 November 2026 `forms.starlighthh.com` left Resend, and the Worker and its Resend key were deleted. Its code stays in `worker/` (code `worker/contact.js`, settings `worker/wrangler.toml`) for reference; using it again would need the domain back in Resend, a new key, and `npx wrangler deploy --config worker/wrangler.toml`.
 
 - The Resend records for `forms.starlighthh.com` (TXT `resend._domainkey.forms`, MX and TXT `send.forms`, CNAME `rsend.forms`) are in Wix DNS and the waiting Cloudflare zone. They can be deleted once the domain leaves Resend; the Google Workspace records stay.
 
