@@ -17,7 +17,7 @@ Multi page website for Starlight Home Health Services, a home health agency in B
 | `contact.html` | Contact |
 | `accessibility.html` | Accessibility statement |
 
-Shared files: `styles.css`, `main.js`, and `assets/` for the logos and icons. `worker/` holds the old contact form Worker, the backup route while the form switches to FormSubmit (see Contact form).
+Shared files: `styles.css`, `main.js`, and `assets/` for the logos and icons. `worker/` holds the old contact form Worker, no longer used (see Contact form).
 
 The contact page shows the office on an embedded Google map.
 
@@ -57,15 +57,15 @@ It goes live when the domain's nameservers change to `kira.ns.cloudflare.com` an
 
 The contact form sends through [FormSubmit](https://formsubmit.co), which emails each message to info@starlighthh.com as a table. `main.js` checks the fields, then posts the message from the visitor's browser to `https://formsubmit.co/ajax/info@starlighthh.com` (the form's `data-relay` address). FormSubmit refuses posts from servers, so this has to happen in the browser. When the visitor gives an email, replying to the message answers them (FormSubmit uses the field named `email` as Reply To).
 
-- **Activation.** The first message makes FormSubmit send an "Activate Form" email to info@starlighthh.com. Nothing is delivered through FormSubmit until someone clicks the link in it (check spam). A new address in `data-relay` needs activating again.
-- **Backup route.** While `data-fallback` is set on the form, a message FormSubmit does not take goes to the old Worker below instead. It is there for the switch over only: once FormSubmit is activated and `forms.starlighthh.com` leaves Resend, the Worker can no longer send, so remove `data-fallback`. Without either, the form says the message was not sent and gives the phone number and email.
+- **Activation.** FormSubmit is activated for info@starlighthh.com (25 November 2026). A new address in `data-relay` would need activating again: its first message makes FormSubmit send an "Activate Form" email there, and nothing is delivered until someone clicks the link in it (check spam).
+- **If FormSubmit does not take a message,** the form says it was not sent and gives the phone number and email; the visitor's input stays in the form. (`main.js` would try a `data-fallback` address on the form first if one were set; none is, since the old Worker below can no longer send.)
 - **Privacy.** FormSubmit is not HIPAA compliant and does not sign a Business Associate Agreement; the owner chose it on 25 November 2026 with that known. The form asks visitors not to send medical details. Keep that hint.
 - **Abuse protection.** A hidden honeypot field (`_honey`, which FormSubmit also honors) quietly drops bot posts. FormSubmit's own captcha page is off (`_captcha` is `false`).
 - **Without JavaScript.** The form posts straight to FormSubmit (the form's `action`), which shows its own thank you page.
 
 ### The old Worker
 
-Until 25 November 2026 the form posted to a Cloudflare Worker, `starlight-contact`, at `https://starlight-contact.henrymm.workers.dev/contact` (agency Cloudflare account), which emailed the message through Resend from `Starlight Website <website@forms.starlighthh.com>`. It stays in `worker/` (code `worker/contact.js`, settings `worker/wrangler.toml`) as the backup route during the switch. Once `forms.starlighthh.com` is removed from Resend it can no longer send; to take it off Cloudflare then: `npx wrangler delete --config worker/wrangler.toml`.
+Until 25 November 2026 the form posted to a Cloudflare Worker, `starlight-contact`, at `https://starlight-contact.henrymm.workers.dev/contact` (agency Cloudflare account), which emailed the message through Resend from `Starlight Website <website@forms.starlighthh.com>`. It was the backup route during the switch. `forms.starlighthh.com` has since left Resend, so it can no longer send and the form no longer uses it. It stays in `worker/` (code `worker/contact.js`, settings `worker/wrangler.toml`) in case it is wanted again (that needs the domain back in Resend and a new key). To take it off Cloudflare: `npx wrangler delete --config worker/wrangler.toml`.
 
 - The Resend records for `forms.starlighthh.com` (TXT `resend._domainkey.forms`, MX and TXT `send.forms`, CNAME `rsend.forms`) are in Wix DNS and the waiting Cloudflare zone. They can be deleted once the domain leaves Resend; the Google Workspace records stay.
 
